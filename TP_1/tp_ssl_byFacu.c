@@ -38,7 +38,7 @@ int verificarCaracter(char c)
 		i = 2;
 	else if (c == 'x' || c == 'X')
 		i = 3;
-	else if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z')
+	else if (c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F')
 		i = 4;
 	else
 		i = -1;
@@ -82,12 +82,12 @@ int procesarCadena (char* str, int automata[7][5])
 
 int main ()
 {
-	printf("----BIENVENIDOS AL TP1 DE SINTAXIS Y SEMANTICA DE LOS LENGUAJES----");
 	FILE* f;
+	FILE * m;
 	char str[100] = "";
 	char c;
 	int indice;
-	char resultado[4][20] = {{"entero"}, {"octal"}, {"hexadecimal"}, {"desastre :("}};
+	char resultado[4][20] = {{"decimal"}, {"octal"}, {"hexadecimal"}, {"desastre :("}};
 	int automata[7][5] = {{2, 1, 1, 6, 6},
 			      {1, 1, 1, 6, 6},
 			      {3, 3, 6, 4, 6},
@@ -95,15 +95,18 @@ int main ()
 			      {5, 5, 5, 6, 5},
 			      {5, 5, 5, 6, 5},
 			      {6, 6, 6, 6, 6}};
-	f = fopen("coso.txt", "r");
+	f = fopen("entrada.txt", "r");
+	m = fopen("salida.txt", "w");
 	while (!feof(f))
 	{
 		c = fgetc(f);
-		if (c == ',')
+		if (c == ',' || c == '\n')
 		{
 			indice = procesarCadena(str, automata);
-			printf("\n%s", str);
-			printf(" es un %s", resultado[indice]);
+			fputs ("\n",m);
+			fputs(str, m);
+			fputs(" es un ", m);
+			fputs(resultado[indice],m);
 			stringVaciar(str);
 		}
 		else

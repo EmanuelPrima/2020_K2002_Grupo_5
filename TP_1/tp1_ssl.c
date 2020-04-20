@@ -38,7 +38,7 @@ int verificarCaracter(char c)
 		i = 2;
 	else if (c == 'x' || c == 'X')
 		i = 3;
-	else if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z')
+	else if (c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F')
 		i = 4;
 	else
 		i = -1;
@@ -80,42 +80,34 @@ int procesarCadena (char* str, int automata[7][5])
 	return res;
 }
 
-
-
-
-int main(){
-
-printf("----BIENVENIDOS AL TP1 DE SINTAXIS Y SEMANTICA DE LOS LENGUAJES----");
-	FILE *f;
-	FILE *f2;
-
+int main ()
+{
+	FILE* f;
+	FILE * m;
 	char str[100] = "";
 	char c;
 	int indice;
-	char resultado[4][20] = {{"entero"}, {"octal"}, {"hexadecimal"}, {"desastre :("}};
+	char resultado[4][20] = {{"decimal"}, {"octal"}, {"hexadecimal"}, {"desastre :("}};
 	int automata[7][5] = {{2, 1, 1, 6, 6},
-					{1, 1, 1, 6, 6},
-					{3, 3, 6, 4, 6},
-					{3, 3, 6, 6, 6},
-					{5, 5, 5, 6, 5},
-					{5, 5, 5, 6, 5},
-					{6, 6, 6, 6, 6}};
-	
+			      {1, 1, 1, 6, 6},
+			      {3, 3, 6, 4, 6},
+			      {3, 3, 6, 6, 6},
+			      {5, 5, 5, 6, 5},
+			      {5, 5, 5, 6, 5},
+			      {6, 6, 6, 6, 6}};
 	f = fopen("entrada.txt", "r");
-	f2 = fopen("salida.txt", "w+");
-	
+	m = fopen("salida.txt", "w");
+	fputs("BIENVENIDOS AL TP N°1 DE SINTAXIS Y SEMANTICA DE LOS LENGUAJES DEL GRUPO 5\n",m);
 	while (!feof(f))
 	{
 		c = fgetc(f);
 		if (c == ',' || c == '\n')
 		{
 			indice = procesarCadena(str, automata);
-			printf("\n%s", str);
-			printf(" es un %s", resultado[indice]);
-			fputs ("\n",f2);
-			fputs(str, f2);
-			fputs(" es un ", f2);
-			fputs(resultado[indice],f2);
+			fputs ("\n",m);
+			fputs(str, m);
+			fputs(" es un ", m);
+			fputs(resultado[indice],m);
 			stringVaciar(str);
 		}
 		else
@@ -123,11 +115,6 @@ printf("----BIENVENIDOS AL TP1 DE SINTAXIS Y SEMANTICA DE LOS LENGUAJES----");
 			addChar(str, c);
 		}
 	}
-	
-	
 	fclose(f);
-	fclose(f2);
-	
 	return 0;
-	
-	}
+}

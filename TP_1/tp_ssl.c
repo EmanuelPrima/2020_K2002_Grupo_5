@@ -1,135 +1,133 @@
-
 #include <stdio.h>
-#include <stdlib.h>
 
-#define Q0 0
-#define Q1 1
-#define Q2 2
-#define Q3 3
-#define Q4 4
-#define Q5 5
-#define RECHAZO 6
+int stringLength (char* str)
+{
+	int i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return i;
+}
 
-int del_1_al_7(int numero);
-int letras_posibles(int numero);
-int ocho_y_nueve(int numero);
-int todo_menos_xX(int numero);
-int definir_numero(int numero);
+void stringVaciar (char* str)
+{
+	int i = stringLength(str);
+	while (i>=0)
+	{
+		str[i] = '\0';
+		i--;
+	}
+}
+
+
+void addChar (char* str, char c)
+{
+	str[stringLength(str)] = c;
+	str[stringLength(str)+1] = '\0';
+}
+
+int verificarCaracter(char c)
+{
+	int i;
+	if (c == '0')
+		i = 0;
+	else if (c >= '1' && c <= '7')
+		i = 1;
+	else if (c == '8' || c == '9')
+		i = 2;
+	else if (c == 'x' || c == 'X')
+		i = 3;
+	else if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z')
+		i = 4;
+	else
+		i = -1;
+	return i; 
+	
+}
+
+void actualizarEstado(int* estado, char c, int automata[7][5])
+{
+	int columna = verificarCaracter(c);
+	if (columna == -1)
+		*estado = 6;
+	else
+		*estado = automata[*estado][columna];
+}
+
+
+int procesarCadena (char* str, int automata[7][5])
+{
+	int estado;
+	int res;
+	estado = 0;
+	char c;
+	int max = stringLength(str), i = 0;
+	while (i<max)
+	{
+		c = str[i];
+		actualizarEstado(&estado, c, automata);
+		i++;
+	}
+	if (estado == 1)
+		res = 0;
+	else if (estado == 2 || estado == 3)
+		res = 1;
+	else if (estado == 5)
+		res = 2;
+	else
+		res = 3;
+	return res;
+}
+
+
 
 
 int main(){
-    int estado = Q0;
-    FILE * flujo = fopen("entrada.txt", "rb");
-    FILE * flujo_2 = fopen("salida.txt", "w");
-   if  (flujo == NULL){
-       perror("error en la apertura del archivo\n");
-       return 1;
-   }
-   
-    int c = getchar();
-    
-   while(feof (flujo) == 0) {
-       while(c != '\n'){
-       	while (c!= ','){
-       		definir_numero(c);
-		   }
-		   
-	  }
 
-   }
+printf("----BIENVENIDOS AL TP1 DE SINTAXIS Y SEMANTICA DE LOS LENGUAJES----");
+	FILE *f;
+	FILE *f2;
 
-   fclose (flujo);
-   
-   return 0;
-}
-
-int definir_numero(int numero){
-	int estado = Q0;
-            switch(estado){
-	  	        case Q0:
-	  		     if(del_1_al_7(numero) == 1 || ocho_y_nueve(numero) == 1)
-			      estado = Q1;
-			     else if (numero== 0){
-			       estado = Q2;
-				   }
-				 else {estado = RECHAZO;};
-				   
-			      break;
-			 
-	            case Q1:
-	    	       if (numero == 0 || del_1_al_7(numero) == 1 || ocho_y_nueve(numero) == 1)
-	    	         estado = Q1;
-	    	       else {estado = RECHAZO;};
-	    	       break;
-	    	       
-	    	    case Q2:
-	    	     if (numero == 0 || del_1_al_7(numero) == 1)
-	    	     	estado = Q1;
-	    	     else if (numero == 'x' || numero == 'X') { 
-	    	        estado = Q3;}
-	    	     else { estado = RECHAZO;};
-				 break;
-				 
-				case Q3:
-				 if(todo_menos_xX(numero) == 1)
-                  estado = Q4;
-                 else estado = RECHAZO;
-                 break;
-                 
-                case Q4:
-                 if(todo_menos_xX(numero) == 1)
-                  estado = Q4;
-                 else estado = RECHAZO;
-                 break;
-                 
-                case Q5:
-                 if (numero == 0 || del_1_al_7(numero) == 1)
-                	 estado = Q5;
-                 else estado = RECHAZO;
-                 break;
-				 
-				 } 
-				 
-	   return estado;	    
-}
-
-int del_1_al_7(int numero){
-	int retorno = 0;
-	int i;
-	for(i = 1; i<8; i++){
-	 if (numero == i){
-	 	retorno = 1;
-	 };
-	}
+	char str[100] = "";
+	char c;
+	int indice;
+	char resultado[4][20] = {{"entero"}, {"octal"}, {"hexadecimal"}, {"desastre :("}};
+	int automata[7][5] = {{2, 1, 1, 6, 6},
+			     		  {1, 1, 1, 6, 6},
+			   			  {3, 3, 6, 4, 6},
+			  		      {3, 3, 6, 6, 6},
+			    	      {5, 5, 5, 6, 5},
+			   		      {5, 5, 5, 6, 5},
+			    	      {6, 6, 6, 6, 6}};
 	
-	return retorno;
-}
-
-int ocho_y_nueve(int numero){
-	int retorno = 0;
-	 if (numero == 8 || numero == 9)
-	  retorno = 1;
-	return retorno;
-}
-
-int todo_menos_xX(int numero){
-	int retorno = 0;
-	 if(ocho_y_nueve(numero) == 1 || del_1_al_7(numero) == 1 || numero == 0 || letras_posibles(numero) == 1)
-	  retorno = 1;
-	  
-	return retorno;
-}
-
-int letras_posibles(int numero){
-	char letras[16]= {'a','b','c','d','e','f','A','B','C','D','E','F'};
-	int i;
-	int retorno = 0;
+	f = fopen("entrada.txt", "r");
+	f2 = fopen("salida.txt", "w+");
 	
-	for (i=0;i<15;i++){
-		if(letras[i] == numero){
-			retorno = 1;
+	while (!feof(f))
+	{
+		c = fgetc(f);
+		if (c == ',' || c == ' ')
+		{
+			indice = procesarCadena(str, automata);
+			printf("\n%s", str);
+			printf(" es un %s", resultado[indice]);
+			fputs ("\n",f2);
+			fputs(str, f2);
+			fputs(" es un ", f2);
+			fputs(resultado[indice],f2);
+			stringVaciar(str);
+		}
+		else
+		{
+			addChar(str, c);
 		}
 	}
 	
-	return retorno;
-}
+	
+	fclose(f);
+	fclose(f2);
+	
+	return 0;
+	
+	}

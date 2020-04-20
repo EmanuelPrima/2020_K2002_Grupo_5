@@ -97,6 +97,7 @@ int main ()
 			      {6, 6, 6, 6, 6}};
 	f = fopen("entrada.txt", "r");
 	m = fopen("salida.txt", "w");
+	fputs("BIENVENIDOS AL TP N°1 DE SINTAXIS Y SEMANTICA DE LOS LENGUAJES DEL GRUPO 5\n",m);
 	while (!feof(f))
 	{
 		c = fgetc(f);

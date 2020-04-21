@@ -1,14 +1,7 @@
 #include <stdio.h>
 
-int esComaOEnter(char c){
-	int i = 0;
-	if (c == ',' || c == '\n')
-	 i = 0;
-	else i = 1;
-	
-	return i;
-	 
-	 
+bool esComaOEOF(char c){
+	return (c == EOF || c == ',') 
 }
 
 int verificarCaracter(char c){
@@ -80,7 +73,7 @@ int main ()
 	{
 		c = fgetc(f);
 	
-	    if(esComaOEnter(c)==1){
+	    if(esComaOEOF(c)){
 		
 	        estado = actualizarEstado(estado,c,automata);
 			indice = procesarCaracter(c, automata,estado);
@@ -98,5 +91,6 @@ int main ()
 
 
 	fclose(f);
+	fclose(m);
 	return 0;
 }

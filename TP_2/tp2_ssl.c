@@ -1,25 +1,33 @@
 #include <stdio.h>
 
 const int pilaMax = 5;
-char pila[5] = {'$', 0, 0, 0, 0};
-
-struct EstadoSiguiente
+typedef struct
 {
     int estadoSiguiente;
     char cadenaAPushear[5];
-};
+} EstadoSiguiente;
 
-void meterString(char str1[5], char str2[5])
+void meterString(char strResultado[5], char strAMeter[5])
 {
-    for (int i=0; str2[i] != '\0'; i++)
+    int i;
+    for (i=0; strAMeter[i] != '\0'; i++)
     {
-        str1[i] = str2[i];
+        strResultado[i] = strAMeter[i];
     }
+    strResultado[i] = '\0';
 }
 
-struct EstadoSiguiente estadoSiguienteCreate(int es, char cad[5])
+int ultimoElemento(char pila[pilaMax])
 {
-    struct EstadoSiguiente e;
+    int n;
+    for (n=0; pila[n] != '\0'; n++)
+    {}
+    return n-1;
+}
+
+ EstadoSiguiente estadoSiguienteCreate(int es, char cad[5])
+{
+    EstadoSiguiente e;
     e.estadoSiguiente = es;
     meterString(e.cadenaAPushear, cad);
     return e;
@@ -27,12 +35,13 @@ struct EstadoSiguiente estadoSiguienteCreate(int es, char cad[5])
 
 char pop (char pila[pilaMax])
 {
-    char c = pila[0];
-    for (int i=0; 1<pilaMax; i++)
+    char primerElemento = pila[0];
+    for (int i=0; i<pilaMax; i++)
     {
         pila[i] = pila[i+1];
     }
-    return c;
+    pila[pilaMax] = '\0';
+    return primerElemento;
 }
 
 void push (char pila[pilaMax], char caracter)
@@ -44,24 +53,97 @@ void push (char pila[pilaMax], char caracter)
     pila[0] = caracter;
 }
 
+void pushString (char pila[pilaMax], char string[5])
+{
+    int cantidadElementos = 0;
+    for (int i=0; string[i] != '\0'; i++)
+    {
+        cantidadElementos++;
+    }
+    for (cantidadElementos; cantidadElementos > 0; cantidadElementos--)
+    {
+        push(pila, string[cantidadElementos-1]);
+    }
+}
+
+int determinarColumna(char c)
+{
+    int retorno;
+    if (c == '0')
+        retorno = 0;
+    else if (c >= '1' && c <= '9')
+        retorno = 1;
+    else if (c == '+' || c == '-' || c == '*' || c == '/')
+        retorno = 2;
+    else if (c == '(')
+        retorno = 3;
+    else if (c == ')')
+        retorno = 4;
+    else
+        retorno = 5;
+    return retorno;
+}
+
+int determinarPila (char c)
+{
+    int retorno = -1;
+    if (c == '$')
+        retorno = 0;
+    else if (c == 'R')
+        retorno = 1;
+    return retorno;
+}
+
+int procesarExpresion (char expresion[100], EstadoSiguiente automata[4][2][6])
+{
+    char pila[5] = {'$', '\0', '\0', '\0', '\0'};
+    int estadoActual = 0;
+    EstadoSiguiente estadoSig;
+    char caracterActual;
+    char cima;
+    int valorCima;
+    int columna;
+    char cadena[5];
+    for (int i=0; expresion[i] != '\0'; i++)
+    {
+        caracterActual = expresion[i];
+        cima = pop(pila);
+        valorCima = determinarPila(cima);
+        columna = determinarColumna(caracterActual);
+        estadoSig = automata[estadoActual][valorCima][columna];
+        estadoActual = estadoSig.estadoSiguiente;
+        pushString(pila, estadoSig.cadenaAPushear);
+    }
+    cima = pop(pila);
+    int retorno;
+    if (estadoActual == 1 && cima == '$' || estadoActual == 2 && cima == '$')
+        retorno = 0;
+    else
+        retorno = 1;
+    return retorno;
+}
+
 int main()
 {
-    struct EstadoSiguiente automata[4][2][6];
+    EstadoSiguiente automata[4][2][6];
     automata[0][0][0] = estadoSiguienteCreate(3, ""); automata[0][0][1] = estadoSiguienteCreate(1, "$"); automata[0][0][2] = estadoSiguienteCreate(3, ""); automata[0][0][3] = estadoSiguienteCreate(0, "R$"); automata[0][0][4] = estadoSiguienteCreate(3, ""); automata[0][0][5] = estadoSiguienteCreate(3, ""); 
     automata[1][0][0] = estadoSiguienteCreate(1, "$"); automata[1][0][1] = estadoSiguienteCreate(1, "$"); automata[1][0][2] = estadoSiguienteCreate(0, "$"); automata[1][0][3] = estadoSiguienteCreate(3, ""); automata[1][0][4] = estadoSiguienteCreate(3, ""); automata[1][0][5] = estadoSiguienteCreate(3, "");
     automata[0][1][0] = estadoSiguienteCreate(3, "");  automata[0][1][1] = estadoSiguienteCreate(1, "R"); automata[0][1][2] = estadoSiguienteCreate(3, ""); automata[0][1][3] = estadoSiguienteCreate(0, "RR"); automata[0][1][4] = estadoSiguienteCreate(3, ""); automata[0][1][5] = estadoSiguienteCreate(3, ""); 
     automata[1][1][0] = estadoSiguienteCreate(1, "R"); automata[1][1][1] = estadoSiguienteCreate(1, "R"); automata[1][1][2] = estadoSiguienteCreate(0, "R"); automata[1][1][3] = estadoSiguienteCreate(3, ""); automata[1][1][4] = estadoSiguienteCreate(2, ""); automata[1][1][5] = estadoSiguienteCreate(3, "");
     automata[2][1][0] = estadoSiguienteCreate(3, ""); automata[2][1][1] = estadoSiguienteCreate(3, ""); automata[2][1][2] = estadoSiguienteCreate(0, "R"); automata[2][1][3] = estadoSiguienteCreate(3, ""); automata[2][1][4] = estadoSiguienteCreate(2, ""); automata[2][1][5] = estadoSiguienteCreate(3, "");
     automata[2][0][0] = estadoSiguienteCreate(3, ""); automata[2][0][1] = estadoSiguienteCreate(3, ""); automata[2][0][2] = estadoSiguienteCreate(0, "$"); automata[2][0][3] = estadoSiguienteCreate(3, ""); automata[2][0][4] = estadoSiguienteCreate(3, ""); automata[2][0][5] = estadoSiguienteCreate(3, ""); 
-    
+    char resultado[2][100] = {"La expresion ingresada es sintacticamente correcta.", "La expresion ingresada tiene errores."};
+    int indiceResultado = 0;
     char expresion[100];
-    for (int i=5; i>0; i--)
+    printf("~~~Bienvienidos al TP 2 de Sintaxis y Semantica de los Lenguajes del grupo 5~~~\nEl programa va a terminar al momento de ingresar una expresion sintacticamente incorrecta.\n");
+    while (indiceResultado != 1)
     {
         printf("---------------------------------------------------------------------------------------------\nIngresa una expresion: ");
         gets(expresion);
-        printf("Vos pusiste: ");
-        puts(expresion);
+        indiceResultado = procesarExpresion(expresion, automata);
+        printf(resultado[indiceResultado]);
+        printf("\n");
     }
-    printf("FIN :)");
+    printf("Terminando programa...");
     return 0;
 }

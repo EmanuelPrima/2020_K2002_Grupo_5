@@ -25,14 +25,6 @@ int ultimoElemento(char pila[pilaMax])
     return n-1;
 }
 
- EstadoSiguiente estadoSiguienteCreate(int es, char cad[5])
-{
-    EstadoSiguiente e;
-    e.estadoSiguiente = es;
-    meterString(e.cadenaAPushear, cad);
-    return e;
-}
-
 char pop (char pila[pilaMax])
 {
     char primerElemento = pila[0];

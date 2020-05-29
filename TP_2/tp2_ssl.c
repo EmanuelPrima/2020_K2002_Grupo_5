@@ -4,7 +4,7 @@ const int pilaMax = 5;
 typedef struct
 {
     int estadoSiguiente;
-    char cadenaAPushear[5];
+    char cadenaAPushear*;
 } EstadoSiguiente;
 
 void meterString(char strResultado[5], char strAMeter[5])
@@ -126,19 +126,19 @@ int procesarExpresion (char expresion[100], EstadoSiguiente automata[4][2][6])
 int main()
 {
     EstadoSiguiente automata[4][2][6];
-    automata[0][0][0] = estadoSiguienteCreate(3, ""); automata[0][0][1] = estadoSiguienteCreate(1, "$"); automata[0][0][2] = estadoSiguienteCreate(3, ""); automata[0][0][3] = estadoSiguienteCreate(0, "R$"); automata[0][0][4] = estadoSiguienteCreate(3, ""); automata[0][0][5] = estadoSiguienteCreate(3, ""); 
-    automata[1][0][0] = estadoSiguienteCreate(1, "$"); automata[1][0][1] = estadoSiguienteCreate(1, "$"); automata[1][0][2] = estadoSiguienteCreate(0, "$"); automata[1][0][3] = estadoSiguienteCreate(3, ""); automata[1][0][4] = estadoSiguienteCreate(3, ""); automata[1][0][5] = estadoSiguienteCreate(3, "");
-    automata[0][1][0] = estadoSiguienteCreate(3, "");  automata[0][1][1] = estadoSiguienteCreate(1, "R"); automata[0][1][2] = estadoSiguienteCreate(3, ""); automata[0][1][3] = estadoSiguienteCreate(0, "RR"); automata[0][1][4] = estadoSiguienteCreate(3, ""); automata[0][1][5] = estadoSiguienteCreate(3, ""); 
-    automata[1][1][0] = estadoSiguienteCreate(1, "R"); automata[1][1][1] = estadoSiguienteCreate(1, "R"); automata[1][1][2] = estadoSiguienteCreate(0, "R"); automata[1][1][3] = estadoSiguienteCreate(3, ""); automata[1][1][4] = estadoSiguienteCreate(2, ""); automata[1][1][5] = estadoSiguienteCreate(3, "");
-    automata[2][1][0] = estadoSiguienteCreate(3, ""); automata[2][1][1] = estadoSiguienteCreate(3, ""); automata[2][1][2] = estadoSiguienteCreate(0, "R"); automata[2][1][3] = estadoSiguienteCreate(3, ""); automata[2][1][4] = estadoSiguienteCreate(2, ""); automata[2][1][5] = estadoSiguienteCreate(3, "");
-    automata[2][0][0] = estadoSiguienteCreate(3, ""); automata[2][0][1] = estadoSiguienteCreate(3, ""); automata[2][0][2] = estadoSiguienteCreate(0, "$"); automata[2][0][3] = estadoSiguienteCreate(3, ""); automata[2][0][4] = estadoSiguienteCreate(3, ""); automata[2][0][5] = estadoSiguienteCreate(3, ""); 
+    automata[0][0][0].estadoSiguiente = 3; automata[0][0][0].cadenaAPushear = ""; automata[0][0][1].estadoSiguiente = 1; automata[0][0][1].cadenaAPushear = "$"; automata[0][0][2].estadoSiguiente = 3; automata[0][0][2].cadenaAPushear = ""; automata[0][0][3].estadoSiguiente = 0; automata[0][0][3].cadenaAPushear = "R$"; automata[0][0][4].estadoSiguiente = 3; automata[0][0][4].cadenaAPushear = ""; automata[0][0][5].estadoSiguiente = 3; automata[0][0][5].cadenaAPushear = "";
+    automata[1][0][0].estadoSiguiente = 1; automata[1][0][0].cadenaAPushear = "$"; automata[1][0][1].estadoSiguiente = 1;automata[1][0][1].cadenaAPushear = "$"; automata[1][0][2].estadoSiguiente = 0; automata[1][0][2].cadenaAPushear = "$"; automata[1][0][3].estadoSiguiente = 3; automata[1][0][3].cadenaAPushear = ""; automata[1][0][4].estadoSiguiente = 3; automata[1][0][4].cadenaAPushear = ""; automata[1][0][5].estadoSiguiente = 3; automata[1][0][5].cadenaAPushear = "";
+    automata[0][1][0].estadoSiguiente = 3; automata[0][1][0].cadenaAPushear = ""; automata[0][1][1].estadoSiguiente = 1; automata[0][1][1].cadenaAPushear = "R"; automata[0][1][2].estadoSiguiente = 3; automata[0][1][2].cadenaAPushear = ""; automata[0][1][3].estadoSiguiente = 0; automata[0][1][3].cadenaAPushear = "RR"; automata[0][1][4].estadoSiguiente = 3; automata[0][1][4].cadenaAPushear = ""; automata[0][1][5].estadoSiguiente = 3; automata[0][1][5].cadenaAPushear ="";
+    automata[1][1][0].estadoSiguiente = 1; automata[1][1][0].cadenaAPushear = "R"; automata[1][1][1].estadoSiguiente = 1; automata[1][1][1].cadenaAPushear = "R"; automata[1][1][2].estadoSiguiente = 0; automata[1][1][2].cadenaAPushear= "R"; automata[1][1][3].estadoSiguiente = 3; automata[1][1][3].cadenaAPushear = ""; automata[1][1][4].estadoSiguiente = 2; automata[1][1][4].cadenaAPushear = ""; automata[1][1][5].estadoSiguiente = 3; automata[1][1][5].cadenaAPushear = "";
+    automata[2][1][0].estadoSiguiente = 3; automata[2][1][0].cadenaAPushear = "";  automata[2][1][1].estadoSiguiente = 3; automata[2][1][1].cadenaAPushear = ""; automata[2][1][2].estadoSiguiente = 0; automata[2][1][2].cadenaAPushear = "R"; automata[2][1][3].estadoSiguiente = 3; automata[2][1][3].cadenaAPushear = ""; automata[2][1][4].estadoSiguiente = 2; automata[2][1][4].cadenaAPushear = ""; automata[2][1][5].estadoSiguiente = 3; automata[2][1][5].cadenaAPushear = "";
+    automata[2][0][0].estadoSiguiente = 3; automata[2][0][0].cadenaAPushear = ""; automata[2][0][1].estadoSiguiente = 3; automata[2][0][1].cadenaAPushear = ""; automata[2][0][2].estadoSiguiente = 0; automata[2][0][2].cadenaAPushear = "$"; automata[2][0][3].estadoSiguiente = 3; automata[2][0][3].cadenaAPushear = ""; automata[2][0][4].estadoSiguiente = 3; automata[2][0][4].cadenaAPushear = ""; automata[2][0][5].estadoSiguiente = 3; automata[2][0][5].cadenaAPushear = "";
     char resultado[2][100] = {"La expresion ingresada es sintacticamente correcta.", "La expresion ingresada tiene errores."};
     int indiceResultado = 0;
     char expresion[100];
-    printf("~~~Bienvienidos al TP 2 de Sintaxis y Semantica de los Lenguajes del grupo 5~~~\nEl programa va a terminar al momento de ingresar una expresion sintacticamente incorrecta.\n");
+    printf("~~~ Bienvienidos al TP 2 de Sintaxis y Semantica de los Lenguajes del grupo 5 ~~~\n\nEl programa va a terminar al momento de ingresar una expresion sintacticamente incorrecta.\n");
     while (indiceResultado != 1)
     {
-        printf("---------------------------------------------------------------------------------------------\nIngresa una expresion: ");
+        printf("\n---------------------------------------------------------------------------------------------\n\nIngresa una expresion: ");
         gets(expresion);
         indiceResultado = procesarExpresion(expresion, automata);
         printf(resultado[indiceResultado]);

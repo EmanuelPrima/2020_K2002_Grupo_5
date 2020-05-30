@@ -4,7 +4,7 @@ const int pilaMax = 5;
 typedef struct
 {
     int estadoSiguiente;
-    char cadenaAPushear*;
+    char* cadenaAPushear;
 } EstadoSiguiente;
 
 void meterString(char strResultado[5], char strAMeter[5])

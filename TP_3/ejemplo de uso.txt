@@ -1,0 +1,21 @@
+int main ()
+{
+	Nodo* listaNormal = NULL; //todas las listas tienen que inicializarse asi
+	Nodo* listaOrdenada = NULL;
+
+	listAdd (&listaNormal, "hola"); // añade a la lista en orden de llegada (nótese que debe recibir la dirección de la lista con &)
+	listAdd (&listaNormal, "chau");
+
+	listInsert (&listaOrdenada, "aac", criterio_abc); // añade a la lista alfabeticamente (el criterio para este tp va a ser siempre el mismo)
+	listInsert (&listaOrdenada, "aab", criterio_abc);
+	listInsert (&listaOrdenada, "aaa", criterio_abc);
+
+	showList(listaNormal); // función por si necesitamos ver el contenido de una lista
+	printf("\n\n");
+	showList(listaOrdenada);
+
+	//salida: hola, chau
+	//        aaa, aab, aac
+
+	return 0;
+}

@@ -7,21 +7,10 @@ typedef struct
 	struct Nodo* sig;
 } Nodo;
 
-char* nuevoString (char* s)
-{
-	char* nuevo = (char*)malloc(sizeof(char)*50);
-	int i;
-	for (i=0; s[i] != '\0'; i++)
-	{
-		nuevo[i] = s[i];
-	}
-	nuevo[i] = '\0';
-	return nuevo;
-}
-
 Nodo* listAdd (Nodo** n, char* s)
 {
-	char* sn = nuevoString(s);
+	char* sn = (char*)malloc(sizeof(char)*strlen(s));
+	strcpy(sn, s);
 	Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
 	nuevo->str = sn;
 	nuevo->sig = NULL;
@@ -43,7 +32,8 @@ Nodo* listAdd (Nodo** n, char* s)
 
 Nodo* listInsert (Nodo** n, char* s, int criterio (char*, char*))
 {
-	char* sn = nuevoString(s);
+	char* sn = (char*)malloc(sizeof(char)*strlen(s));
+	strcpy(sn, s);
 	Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
 	nuevo->str = sn;
 	nuevo->sig = (void*)(*n);

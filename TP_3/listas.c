@@ -9,7 +9,7 @@ typedef struct
 
 Nodo* listAdd (Nodo** n, char* s)
 {
-	char* sn = (char*)malloc(sizeof(char)*strlen(s));
+	char* sn = (char*)malloc(sizeof(char)*(strlen(s) + 1));
 	strcpy(sn, s);
 	Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
 	nuevo->str = sn;

@@ -19,3 +19,22 @@ int main ()
 
 	return 0;
 }
+
+//ejemplo con listas unicas
+
+int main ()
+{
+	Nodo* listaUnica = NULL;
+	Nodo* aux;
+	aux = listAdd1 (&listaUnica, "sintaxis"); //sirve para cuando no queremos que aparezcan repetidos (y nos interesa la cantidad de veces)
+	aux->veces = aux->veces + 1;
+	aux = listAdd1 (&listaUnica, " y ");
+	aux->veces = aux->veces + 1;
+	aux = listAdd1 (&listaUnica, "semantica");
+	aux->veces = aux->veces + 1;
+	aux = listAdd1 (&listaUnica, "sintaxis");
+	aux->veces = aux->veces + 1;
+
+	showList(listaUnica);
+	//salida: sintaxis (2 veces),  y  (1 veces), semantica (1 veces)
+}

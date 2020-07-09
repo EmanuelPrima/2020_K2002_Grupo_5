@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct
 {
 	char* str;
+	int veces;
 	struct Nodo* sig;
 } Nodo;
 
@@ -14,6 +16,7 @@ Nodo* listAdd (Nodo** n, char* s)
 	Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
 	nuevo->str = sn;
 	nuevo->sig = NULL;
+	nuevo->veces = 0;
 	if (*n == NULL)
 	{
 		*n = nuevo;
@@ -37,6 +40,7 @@ Nodo* listInsert (Nodo** n, char* s, int criterio (char*, char*))
 	Nodo* nuevo = (Nodo*)malloc(sizeof(Nodo));
 	nuevo->str = sn;
 	nuevo->sig = (void*)(*n);
+	nuevo->veces = 0;
 	Nodo* anterior = NULL;
 	if (*n == NULL)
 	{
@@ -87,6 +91,36 @@ Nodo* listInsert (Nodo** n, char* s, int criterio (char*, char*))
 	return nuevo;
 }
 
+Nodo* listSearch (Nodo** n, char* s)
+{
+	Nodo* aux = *n;
+	while (aux != NULL && strcmp(aux->str, s) != 0)
+	{
+		aux = (void*)(aux->sig);
+	}
+	return aux;
+}
+
+Nodo* listInsert1 (Nodo** n, char* s, int criterio(char*, char*))
+{
+	Nodo* buscado = listSearch(n, s);
+	if (buscado == NULL)
+	{
+		buscado = listInsert(n, s, criterio);
+	}
+	return buscado;
+}
+
+Nodo* listAdd1 (Nodo** n, char* s)
+{
+	Nodo* buscado = listSearch(n, s);
+	if (buscado == NULL)
+	{
+		buscado = listAdd(n, s);
+	}
+	return buscado;
+}
+
 int criterio_abc (char* a, char* b)
 {
 	int ret = 0;
@@ -110,7 +144,7 @@ void showList(Nodo* n)
 {
 	while (n != NULL)
 	{
-		printf("%s", n->str);
+		printf("%s (%i veces)", n->str, n->veces);
 		n = (Nodo*)n->sig;
 		if (n != NULL)
 			printf(", ");

@@ -33,7 +33,7 @@
 
 "//".*$ {aux = listAdd(&listaComentarios, yytext); aux->valor = 0;}
 
-"/*"(.|\n)*"*/" {aux = listAdd(&listaComentarios, yytext); aux->valor = 1;}
+"/*"[^"*/"]*"*/" {aux = listAdd(&listaComentarios, yytext); aux->valor = 1;}
 
 "char"|"double"|"enum"|"float"|"int"|"void" {aux = listAdd(&listaPalabrasReservadas, yytext); aux->valor = 0;}
 

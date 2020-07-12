@@ -27,6 +27,8 @@ int main ()
 	de muchas lineas,
 	no puedo creerlo :D*/
 	dat.z = &i;
+	/* voy a hacer otro comentario
+	ultra sensacional. */
 	float floats[4] = {32.2e-4, .54E2, 123.321, 98.E+7};
 	return (funcion(a, b) + 0x34356FF);
 }

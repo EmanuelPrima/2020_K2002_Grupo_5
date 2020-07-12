@@ -123,20 +123,7 @@ Nodo* listAdd1 (Nodo** n, char* s)
 
 int criterio_abc (char* a, char* b)
 {
-	int ret = 0;
-	int i;
-	for (i = 0; a[i] == b[i] && a[i] != '\0' && b[i] != '\0'; i++)
-	{}
-	if (a[i] != '\0' && b[i] != '\0')
-		ret = a[i] - b[i];
-	else
-	{
-		if (a[i] == '\0')
-			ret = -1;
-		else
-			ret = 1;
-	}
-	return ret;
+	return strcmp(a, b);
 }
 
 

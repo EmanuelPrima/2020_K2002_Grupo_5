@@ -1,4 +1,6 @@
 #include <math.h>
+#include <string.h>
+#include <stdlib.h>
 
 int octalADecimal(int octal)
 {
@@ -40,4 +42,34 @@ int hexaADecimal(char hexVal[])
     } 
       
     return dec_val; 
-} 
+}
+
+char* parteEntera (char* real)
+{
+	int len;
+	char* p_entera;
+	for (len=0; real[len] != '.'; len++)
+	{
+	}
+	if (len == 0)
+	{
+		p_entera = malloc(sizeof(char)*2);
+		p_entera = "0";
+	}
+	else
+	{
+		p_entera = malloc(sizeof(char)*(len+1));
+		strcpy(p_entera, real);
+		p_entera[len] = '\0';
+	}
+	return p_entera;
+}
+
+char* mantisa (char* real)
+{
+	int len;
+	for (len=0; real[len] != '.'; len++)
+	{
+	}
+	return (real+sizeof(char)*(len+1));
+}

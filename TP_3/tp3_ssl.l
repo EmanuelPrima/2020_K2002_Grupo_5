@@ -10,9 +10,9 @@
     Nodo* listaConstantesDec = NULL;
     Nodo* listaConstantesOct = NULL;
     Nodo* listaConstantesHex = NULL;
-    Nodo* listaConstantesReales = NULL;         //FALTA HACER!!!!!
+    Nodo* listaConstantesReales = NULL;
     Nodo* listaConstantesCaracter = NULL;
-    Nodo* listaOperadoresYPuntuacion = NULL;    //FALTA HACER!!!!!
+    Nodo* listaOperadoresYPuntuacion = NULL;
     Nodo* listaComentarios = NULL;
     Nodo* listaNoReconocidos = NULL;
 
@@ -53,7 +53,13 @@
 
 0[xX][0-9a-fA-F]+ {aux = listAdd(&listaConstantesHex, yytext); aux->valor = hexaADecimal((aux->str)+2);}
 
+[0-9]+(\.)([eE][\+\-]?[0-9]+)? {listAdd(&listaConstantesReales, yytext);}
+
+[0-9]*(\.)[0-9]+([eE]([\+\-]?)[0-9]+)? {listAdd(&listaConstantesReales, yytext);}
+
 \'\\?.\' {aux = listAdd(&listaConstantesCaracter, yytext); aux->valor = indiceCaracteres; indiceCaracteres++;}
+
+"#"|"%"|")"|"-"|";"|"?"|"]"|"&"|"*"|"."|"<"|"@"|"^"|"'"|"+"|"/"|"="|"["|"_"|"("|","|":"|">"|">="|"<="|"=="|"&&"|"||"|"++"|"--"|"!="|"<<"|"<<="|">>"|">>="|"~"|"&="|"|="|"^="|"->"|"->*"|".*"|"{"|"}"|"$"|" "|"\t" {aux = listAdd1(&listaOperadoresYPuntuacion, yytext); aux->valor++;}
 
 . {aux = listAdd(&listaNoReconocidos, yytext); aux->valor = num_linea;}
 
@@ -139,6 +145,19 @@ int main ()
         aux = (void*)aux->sig;
     }
 
+    fputs("\n----:CONSTANTES REALES:----\n", fsalida);
+    aux = listaConstantesReales;
+    while (aux != NULL)
+    {
+        fputs(aux->str, fsalida);
+        fputs("\t-> parte entera: ", fsalida);
+        fputs(parteEntera(aux->str), fsalida);
+        fputs(", mantisa: ", fsalida);
+        fputs(mantisa(aux->str), fsalida);
+        fputs(".\n", fsalida);
+        aux = (void*)aux->sig;
+    }
+
     fputs("\n----:CONSTANTES CARACTER:----\n", fsalida);
     aux = listaConstantesCaracter;
     while (aux != NULL)
@@ -151,6 +170,17 @@ int main ()
         aux = (void*)aux->sig;
     }
 
+    fputs("\n----:OPERADORES Y CARACTERES DE PUNTUACION----\n", fsalida);
+    aux = listaOperadoresYPuntuacion;
+    while (aux != NULL)
+    {
+        fputs(aux->str, fsalida);
+        fputs("\t-> ocurrencias: ", fsalida);
+        itoa(aux->valor, valorStr, 10);
+        fputs(valorStr, fsalida);
+        fputs(".\n", fsalida);
+        aux = (void*)aux->sig;
+    }
 
     fputs("\n----:COMENTARIOS:----\n", fsalida);
     aux = listaComentarios;

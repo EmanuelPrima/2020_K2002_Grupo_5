@@ -4,6 +4,8 @@ typedef struct //declaro una estructura llamada dato
 	int* z;
 } dato;
 
+·
+
 int main ()
 {
 	int a = 256, b = 065; //declaro un entero ;)
@@ -13,6 +15,7 @@ int main ()
 	{
 		b = funcion(i, b); //esta funcion no sirve en realidad, pero bueno. que se le va a hacer?
 	}
+	ñ
 	a = b*2;
 	str = "Chau mundo :(";
 	str[a] = '\0';
@@ -24,5 +27,6 @@ int main ()
 	de muchas lineas,
 	no puedo creerlo :D*/
 	dat.z = &i;
+	float floats[4] = {32.2e-4, .54E2, 123.321, 98.E+7};
 	return (funcion(a, b) + 0x34356FF);
 }

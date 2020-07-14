@@ -45,7 +45,7 @@
 
 [a-zA-Z_][a-zA-Z0-9_]* {aux = listInsert1(&listaIdentificadores, yytext, criterio_abc); aux->valor++;}
 
-\".*\" {aux = listAdd(&listaLiteralesCadena, yytext); aux->valor = yyleng - 2;}
+\"[^\"]*\" {aux = listAdd(&listaLiteralesCadena, yytext); aux->valor = yyleng - 2;}
 
 [1-9][0-9]* {listAdd(&listaConstantesDec, yytext); acumuladorDecimales = acumuladorDecimales + atoi(yytext);}
 
@@ -57,7 +57,7 @@
 
 [0-9]*(\.)[0-9]+([eE]([\+\-]?)[0-9]+)? {listAdd(&listaConstantesReales, yytext);}
 
-\'\\?.\' {aux = listAdd(&listaConstantesCaracter, yytext); aux->valor = indiceCaracteres; indiceCaracteres++;}
+\'[^']*\' {aux = listAdd(&listaConstantesCaracter, yytext); aux->valor = indiceCaracteres; indiceCaracteres++;}
 
 "#"|"%"|")"|"-"|";"|"?"|"]"|"&"|"*"|"."|"<"|"@"|"^"|"'"|"+"|"/"|"="|"["|"_"|"("|","|":"|">"|">="|"<="|"=="|"&&"|"||"|"++"|"--"|"!="|"<<"|"<<="|">>"|">>="|"~"|"&="|"|="|"^="|"->"|"->*"|".*"|"{"|"}"|"$"|" "|"\t" {aux = listAdd1(&listaOperadoresYPuntuacion, yytext); aux->valor++;}
 

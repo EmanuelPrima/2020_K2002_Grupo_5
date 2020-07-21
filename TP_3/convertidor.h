@@ -44,32 +44,29 @@ int hexaADecimal(char hexVal[])
     return dec_val; 
 }
 
-char* parteEntera (char* real)
+char* parteEntera(char* real)
 {
-	int len;
-	char* p_entera;
-	for (len=0; real[len] != '.'; len++)
-	{
-	}
-	if (len == 0)
-	{
-		p_entera = malloc(sizeof(char)*2);
-		p_entera = "0";
-	}
-	else
-	{
-		p_entera = malloc(sizeof(char)*(len+1));
-		strcpy(p_entera, real);
-		p_entera[len] = '\0';
-	}
-	return p_entera;
+	float valor = atof(real);
+	char* parte_entera = malloc(30);
+	sprintf(parte_entera, "%f", valor);
+	int i = 0;
+	for (i; parte_entera[i] != '.'; i++)
+	{}
+	parte_entera[i] = '\0';
+	return parte_entera;
 }
 
-char* mantisa (char* real)
+char* mantisa(char* real)
 {
-	int len;
-	for (len=0; real[len] != '.'; len++)
-	{
-	}
-	return (real+sizeof(char)*(len+1));
+	float valor = atof(real);
+	char* parte_mantisa = malloc(30);
+	sprintf(parte_mantisa, "%f", valor);
+	int i = 0;
+	for (i; parte_mantisa[i] != '.'; i++)
+	{}
+	parte_mantisa = &parte_mantisa[i+1];
+	char* ret = malloc(strlen(parte_mantisa)+3);
+	strcpy(ret, "0.");
+	strcat(ret, parte_mantisa);
+	return ret;
 }

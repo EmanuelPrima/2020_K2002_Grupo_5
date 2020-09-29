@@ -1,0 +1,101 @@
+----:IDENTIFICADORES:----
+a	-> ocurrencias: 5.
+b	-> ocurrencias: 5.
+c_dos	-> ocurrencias: 1.
+c_uno	-> ocurrencias: 1.
+dat	-> ocurrencias: 3.
+dato	-> ocurrencias: 2.
+floats	-> ocurrencias: 1.
+funcion	-> ocurrencias: 3.
+i	-> ocurrencias: 7.
+main	-> ocurrencias: 1.
+str	-> ocurrencias: 3.
+valor_1	-> ocurrencias: 1.
+valor_2	-> ocurrencias: 1.
+z	-> ocurrencias: 2.
+
+----:LITERALES CADENA:----
+"Hola mundo"	-> longitud de cadena: 10.
+"Chau mundo :("	-> longitud de cadena: 13.
+
+----:PALABRAS RESERVADAS:----
+typedef (miscelaneo).
+struct (miscelaneo).
+int (tipo de dato).
+int (tipo de dato).
+int (tipo de dato).
+int (tipo de dato).
+char (tipo de dato).
+int (tipo de dato).
+int (tipo de dato).
+int (tipo de dato).
+for (estructura de control).
+int (tipo de dato).
+static (modificador).
+char (tipo de dato).
+volatile (modificador).
+char (tipo de dato).
+sizeof (miscelaneo).
+double (tipo de dato).
+float (tipo de dato).
+return (estructura de control).
+
+----:CONSTANTES DECIMALES:----
+256 -> valor: 256.
+2 -> valor: 2.
+4 -> valor: 4.
+Suma total: 262
+
+----:CONSTANTES OCTALES:----
+065 -> valor: 53.
+0 -> valor: 0.
+
+----:CONSTANTES HEXADECIMALES:----
+0x34356FF -> valor: 54744831.
+
+----:CONSTANTES REALES:----
+32.2e-4	-> parte entera: 0, mantisa: 0.003220.
+.54E2	-> parte entera: 54, mantisa: 0.000000.
+123.321	-> parte entera: 123, mantisa: 0.320999.
+98.E+7	-> parte entera: 980000000, mantisa: 0.000000.
+
+----:CONSTANTES CARACTER:----
+1: '\0'.
+2: 'a'.
+3: 'k'.
+
+----:OPERADORES Y CARACTERES DE PUNTUACION----
+ 	-> ocurrencias: 59.
+{	-> ocurrencias: 4.
+		-> ocurrencias: 23.
+;	-> ocurrencias: 19.
+*	-> ocurrencias: 3.
+}	-> ocurrencias: 4.
+(	-> ocurrencias: 7.
+)	-> ocurrencias: 7.
+=	-> ocurrencias: 13.
+,	-> ocurrencias: 7.
+<=	-> ocurrencias: 1.
+++	-> ocurrencias: 1.
+[	-> ocurrencias: 2.
+]	-> ocurrencias: 2.
+.	-> ocurrencias: 2.
+&	-> ocurrencias: 1.
++	-> ocurrencias: 1.
+
+----:COMENTARIOS:----
+//declaro una estructura llamada dato (comentario simple).
+//declaro un entero ;) (comentario simple).
+//esta funcion no sirve en realidad, pero bueno. que se le va a hacer? (comentario simple).
+//sin palabras.  (comentario simple).
+/* aca me inspire y decidi hacer un super comentario
+	de muchas lineas,
+	no puedo creerlo :D*/ (comentario de multiples lineas).
+/* voy a hacer otro comentario
+	ultra sensacional. */ (comentario de multiples lineas).
+
+----:CARACTERES NO RECONOCIDOS:----
+Â en la linea 7.
+· en la linea 7.
+Ã en la linea 18.
+± en la linea 18.

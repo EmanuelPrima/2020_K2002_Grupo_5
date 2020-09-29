@@ -1,0 +1,19 @@
+BIENVENIDOS AL TP N°1 DE SINTAXIS Y SEMANTICA DE LOS LENGUAJES DEL GRUPO 5
+12412 es un decimal
+4231 es un decimal
+0x3154 es un hexadecimal
+0432 es un octal
+cachito es un desastre :(
+0X435FF es un hexadecimal
+0xA34 es un hexadecimal
+076 es un octal
+099 es un desastre :(
+0xABCDEF es un hexadecimal
+101001110101 es un decimal
+389792 es un decimal
+074763520 es un octal
+12378A es un desastre :(
+0X0X123 es un desastre :(
+0xA2FC es un hexadecimal
+0005
+ es un desastre :(

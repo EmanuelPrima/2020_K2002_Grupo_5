@@ -36,15 +36,21 @@ option noyywrap
 
 [1-9][0-9]* {yylval.entero = atoi(yytext); return CONSTANTE_DECIMAL;}
 
-0[0-7]*
+0[0-7]* {yylval.entero = atoi(yytext); return CONSTANTE_OCTAL;}
 
-0[xX][0-9a-fA-F]+
+0[xX][0-9a-fA-F]+ {yylval.entero = atoi(yytext); return CONSTANTE_HEXADECIMAL;}
 
-[0-9]+(\.)([eE][\+\-]?[0-9]+)?
+[0-9]+(\.)([eE][\+\-]?[0-9]+)? {yylval.real = strtol(yytext, NULL, 0); return CONSTANTE_REAL;}
 
-[0-9]*(\.)[0-9]+([eE]([\+\-]?)[0-9]+)?
+[0-9]*(\.)[0-9]+([eE]([\+\-]?)[0-9]+)? {yylval.real = strtol(yytext, NULL, 0); return CONSTANTE_REAL;}
 
-\'[^']*\' {return yytext[0];}
+[uU][lL]? {return SUFIJO_UNSIGNED;}
+
+[lL][uL]? {return SUFIJO_LONG;}
+
+[fFlL] {return SUFIJO_REAL;}
+
+\'[^']*\' {return CONSTANTE_CARACTER;}
 
 .
 

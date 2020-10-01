@@ -145,7 +145,7 @@ sufijo_real:    /* vacio */
                 | SUFIJO_REAL
 ;
 
-constante_caracter:     /* vacio */                /* tengo dudas con esto */
+constante_caracter:     /* vacio */                /* Modificar en caso que sea necesario */
                         | CONSTANTE_CARACTER
 
 %%

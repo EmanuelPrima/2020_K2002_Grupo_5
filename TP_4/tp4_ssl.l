@@ -46,11 +46,11 @@ option noyywrap
 
 [uU][lL]? {return SUFIJO_UNSIGNED;}
 
-[lL][uL]? {return SUFIJO_LONG;}
+[lL][uU]? {return SUFIJO_LONG;}
 
 [fFlL] {return SUFIJO_REAL;}
 
-\'[^']*\' {return CONSTANTE_CARACTER;}
+\'[^']*\' {return CONSTANTE_CARACTER;}  /* Modificar en caso que sea necesario */
 
 .
 

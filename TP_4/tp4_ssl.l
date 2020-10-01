@@ -50,7 +50,7 @@ option noyywrap
 
 [fFlL] {return SUFIJO_REAL;}
 
-\'[^']*\' {return CONSTANTE_CARACTER;}  /* Modificar en caso que sea necesario */
+\'[^']*\' {yylval.entero = yytext[1], return CONSTANTE_CARACTER;}
 
 .
 

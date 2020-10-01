@@ -1,5 +1,5 @@
 %{
-    #include "tp4_ssl.tab.h"
+    #include "tp4_mio.tab.h"
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
@@ -12,7 +12,23 @@ option noyywrap
 
 "\n" {return '\n';}
 
-"("|")"|"["|"]"|"," {return yytext[0];}
+"("|")"|"["|"]"|","|"?"|":"|";"|"{"|"}" {return yytext[0];}
+
+"if" {return IF;}
+
+"switch" {return SWITCH;}
+
+"else" {return ELSE;}
+
+"sizeof" {return OPER_SIZEOF;}
+
+"while" {return WHILE;}
+
+"for" {return FOR;}
+
+"do" {return DO;}
+
+"return" {return RETURN;}
 
 "++"|"--" {return OPER_INCREMENTO;}
 
@@ -23,6 +39,8 @@ option noyywrap
 "&&" {return AND;}
 
 "||" {return OR;}
+
+"int"|"double"|"float"|"char"|"void" {strcpy(yylval.cadena, yytext); return TIPO_DATO;}
 
 ">"|"<"|"<="|">=" {strcpy(yylval.cadena, yytext); return OPER_RELACIONAL;}
 
@@ -44,13 +62,7 @@ option noyywrap
 
 [0-9]*(\.)[0-9]+([eE]([\+\-]?)[0-9]+)? {yylval.real = strtol(yytext, NULL, 0); return CONSTANTE_REAL;}
 
-[uU][lL]? {return SUFIJO_UNSIGNED;}
-
-[lL][uU]? {return SUFIJO_LONG;}
-
-[fFlL] {return SUFIJO_REAL;}
-
-\'[^']*\' {yylval.entero = yytext[1], return CONSTANTE_CARACTER;}
+\'[^']*\' {yylval.entero = yytext[1]; return CONSTANTE_CARACTER;}
 
 .
 

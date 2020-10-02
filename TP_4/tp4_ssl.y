@@ -16,12 +16,15 @@ void yyerror (char const *s) {
    fprintf (stderr, "%s\n", s);
 }
 
+int contadorParametros = 0;
+int contadorDeclaraciones = 0;
+int contadorSentencias = 0;
+
 %}
 
 %union {
-char cadena[30];
+char cadena[50];
 int entero;
-int tipo;
 float real;
 }
 
@@ -54,43 +57,7 @@ float real;
 %token <cadena> DO
 %token <cadena> RETURN
 
-%type <cadena> expresion
-%type <cadena> opcionExpresion
-%type <cadena> expAsignacion
-%type <cadena> expCondicional
-%type <cadena> expOr
-%type <cadena> expAnd
-%type <cadena> expIgualdad
-%type <cadena> expRelacional
-%type <cadena> expAditiva
-%type <cadena> expMultiplicativa
-%type <cadena> expUnaria
-%type <cadena> expPostfijo
-%type <cadena> opcionListaArgumentos
-%type <cadena> expPrimaria
-
-%type <cadena> declaracion
-%type <cadena> declaracionVariablesSimples
-%type <cadena> declaracionFunciones
-%type <cadena> listaVariablesSimples
 %type <cadena> unaVariableSimple
-%type <cadena> opcionInicializacion
-%type <cadena> opcionArgumentosConTipo
-%type <cadena> argumentosConTipo
-
-%type <cadena> sentencia
-%type <cadena> sentenciaCompuesta
-%type <cadena> sentenciaExpresion
-%type <cadena> sentenciaIteracion
-%type <cadena> sentenciaSalto
-%type <cadena> sentenciaSeleccion
-%type <cadena> opcionListaDeclaraciones
-%type <cadena> opcionListaSentencias
-
-%type <entero> constante
-%type <cadena> sufijo_entero
-%type <cadena> sufijo_real
-
 
 %%
 
@@ -98,10 +65,9 @@ input:  /* vacio */
         | input line
 ;
 
-line:   '\n'
-        | expresion '\n'        {printf("\nSe leyo una expresion exitosamente.\n");}
-        | declaracion '\n'      {printf("\nSe leyo una declaracion exitosamente.\n");}
-        | sentencia '\n'        {printf("\nSe leyo una sentencia exitosamente.\n");}
+line:   '\n'                    
+        | declaracion '\n'      
+        | sentencia '\n'
 ;
 
 /* --------------------------------------------------------------------------------------
@@ -171,16 +137,17 @@ expPrimaria:    IDENTIFICADOR
 
 declaracion:    declaracionVariablesSimples
                 | declaracionFunciones
+                | definicionFunciones
 ;
 
-declaracionVariablesSimples:    TIPO_DATO listaVariablesSimples ';'
+declaracionVariablesSimples:    TIPO_DATO listaVariablesSimples ';' {printf(" de tipo %s.", $<cadena>1);}
 ;
 
-listaVariablesSimples:  unaVariableSimple
-                        | listaVariablesSimples ',' unaVariableSimple
+listaVariablesSimples:  unaVariableSimple       {printf("\nSe declara la variable %s", $<cadena>1);}
+                        | listaVariablesSimples ',' unaVariableSimple {printf(", y la variable %s", $<cadena>3);}
 ;
 
-unaVariableSimple:      IDENTIFICADOR opcionInicializacion
+unaVariableSimple:      IDENTIFICADOR opcionInicializacion      {strcpy($<cadena>$, $<cadena>1);}
 ;
 
 opcionInicializacion:   /* vacio */
@@ -189,21 +156,27 @@ opcionInicializacion:   /* vacio */
 
 
 
-declaracionFunciones:   TIPO_DATO IDENTIFICADOR '(' opcionArgumentosConTipo ')' ';'
+declaracionFunciones:   TIPO_DATO IDENTIFICADOR '(' opcionArgumentosConTipo ')' ';' {printf("\nSe declara la funcion %s de tipo %s que recibe %i parametro/s.", $<cadena>2, $<cadena>1, contadorParametros); contadorParametros = 0;}
 ;
 
-opcionArgumentosConTipo:        /* vacio */
-                                | TIPO_DATO IDENTIFICADOR
-                                | TIPO_DATO IDENTIFICADOR ',' argumentosConTipo
+opcionArgumentosConTipo:        /* vacio */ 
+                                | TIPO_DATO opcionReferencia IDENTIFICADOR {contadorParametros++;}
+                                | TIPO_DATO opcionReferencia IDENTIFICADOR ',' argumentosConTipo {contadorParametros++;}
 ;
 
-argumentosConTipo:      TIPO_DATO IDENTIFICADOR
-                        | TIPO_DATO IDENTIFICADOR ',' argumentosConTipo
+argumentosConTipo:      TIPO_DATO opcionReferencia IDENTIFICADOR {contadorParametros++;}
+                        | TIPO_DATO opcionReferencia IDENTIFICADOR ',' argumentosConTipo {contadorParametros++;}
 ;
+
+opcionReferencia:       /* vacio */
+                        | '&'
+;
+
+definicionFunciones:    TIPO_DATO IDENTIFICADOR '(' opcionArgumentosConTipo ')' sentencia {printf("\nSe define la funcion %s de tipo %s que recibe %i parametro/s.", $<cadena>2, $<cadena>1, contadorParametros); contadorParametros = 0;}
 
 /* --------------------------------------------------------------------------------------
-   -----------------------------GRAMATICA DE LAS SENTENCIAS-----------------------------
--------------------------------------------------------------------------------------- */
+   -----------------------------GRAMATICA DE LAS SENTENCIAS------------------------------
+   -------------------------------------------------------------------------------------- */
 
 sentencia:      sentenciaCompuesta
                 | sentenciaExpresion
@@ -212,38 +185,38 @@ sentencia:      sentenciaCompuesta
                 | sentenciaSalto
 ;
 
-sentenciaCompuesta:     '{' opcionListaDeclaraciones opcionListaSentencias '}'
+sentenciaCompuesta:     '{' opcionListaDeclaraciones opcionListaSentencias '}'  {printf("\nSe encontro una sentencia compuesta con %i declaraciones y otras %i sentencias.", contadorDeclaraciones, contadorSentencias); contadorDeclaraciones = 0; contadorSentencias = 0;}
 ;
 
 opcionListaDeclaraciones:       /* vacio */
-                                | declaracion
-                                | opcionListaDeclaraciones declaracion
+                                | declaracion                           {contadorDeclaraciones++;}
+                                | opcionListaDeclaraciones declaracion  {contadorDeclaraciones++;}
 ;
 
-listaSentencias:        sentencia
-                        | listaSentencias sentencia
+listaSentencias:        sentencia                       {contadorSentencias++;}
+                        | listaSentencias sentencia     {contadorSentencias++;}
 ;
 
 opcionListaSentencias:  /* vacio*/
-                        | sentencia
-                        | listaSentencias sentencia
+                        | sentencia                     {contadorSentencias++;}
+                        | listaSentencias sentencia     {contadorSentencias++;}
 ;
 
-sentenciaExpresion:     ';'
-                        | expresion ';'
+sentenciaExpresion:     ';'                     {printf("\nSe encontro una sentencia vacia.");}
+                        | expresion ';'         {printf("\nSe encontro una sentencia expresion.");}
 ;
 
-sentenciaSeleccion:     IF '(' expresion ')' sentencia
-                        | IF '(' expresion ')' sentencia ELSE sentencia
-                        | SWITCH '(' expresion ')' sentencia
+sentenciaSeleccion:     IF '(' expresion ')' sentencia                  {printf("\nSe encontro una sentencia de seleccion (if).");}
+                        | IF '(' expresion ')' sentencia ELSE sentencia {printf("\nSe encontro una sentencia de seleccion (if y else).");}
+                        | SWITCH '(' expresion ')' sentencia            {printf("\nSe encontro una sentencia de seleccion (switch).");}
 ;
 
-sentenciaIteracion:     WHILE '(' expresion ')' sentencia
-                        | DO sentencia WHILE '(' expresion ')' ';'
-                        | FOR '(' opcionExpresion ';' opcionExpresion ';' opcionExpresion ')' sentencia
+sentenciaIteracion:     WHILE '(' expresion ')' sentencia                                               {printf("\nSe encontro una sentencia de iteracion (while).");}
+                        | DO sentencia WHILE '(' expresion ')' ';'                                      {printf("\nSe encontro una sentencia de iteracion (do while).");}
+                        | FOR '(' opcionExpresion ';' opcionExpresion ';' opcionExpresion ')' sentencia {printf("\nSe encontro una sentencia de iteracion (for).");}
 ;
 
-sentenciaSalto: RETURN opcionExpresion ';'
+sentenciaSalto: RETURN opcionExpresion ';'      {printf("\nSe encontro una sentencia de salto.");}
 ;
 
 opcionExpresion:        /* vacio */

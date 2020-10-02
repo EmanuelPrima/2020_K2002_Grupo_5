@@ -12,7 +12,7 @@ option noyywrap
 
 "\n" {return '\n';}
 
-"("|")"|"["|"]"|","|"?"|":"|";"|"{"|"}" {return yytext[0];}
+"("|")"|"["|"]"|","|"?"|":"|";"|"{"|"}"|"&" {return yytext[0];}
 
 "if" {return IF;}
 

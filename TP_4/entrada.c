@@ -1,8 +1,13 @@
-a > 4
-variable <= 32 + 45 * 6
-esTrue || entero == 3 && a * 2 < ++a % "Churrasquito"
-a[123412]
-float declaracion = 25.12345;
-int funcion(int i, char c);
-if (s == 56) a = 8;
-while (j > 0) j -= 1;
+int funcionLoca(int a, int b) { int nuevoValor = 56; return a + b / nuevoValor; }
+
+void cumplirAnios(int &edadActual) { edadActual += 1; }
+
+char genero = 'm';
+int edad = 42, dni = 19355648;
+float ahorroEnDolares = 2556.622;
+int a = funcionLoca(edad, dni);
+if (genero == 'm') { printf("es mujer"); } else printf("es varon");
+while (edad < 18 && dni >= 40000000) cumplirAnios(edad);
+char fun1(int m, int k, char c);
+int fun2(float f);
+

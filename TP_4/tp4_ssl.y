@@ -65,9 +65,8 @@ input:  /* vacio */
         | input line
 ;
 
-line:   '\n'                    
-        | declaracion '\n'      
-        | sentencia '\n'
+line:   declaracion     
+        | sentencia
 ;
 
 /* --------------------------------------------------------------------------------------

@@ -10,7 +10,7 @@ option noyywrap
 
 %%
 
-"\n" {return '\n';}
+"\n"
 
 "("|")"|"["|"]"|","|"?"|":"|";"|"{"|"}"|"&" {return yytext[0];}
 

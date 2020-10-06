@@ -12,20 +12,18 @@ int yywrap(){
 	return(1);
 }
 
-void yyerror (char const *s) {
-   fprintf (stderr, "%s\n", s);
-}
+void yyerror (char const *s) {}
 
 int contadorParametros = 0;
 int contadorDeclaraciones = 0;
 int contadorSentencias = 0;
+int linea = 1;
 
 %}
 
 %union {
 char cadena[50];
 int entero;
-float real;
 }
 
 %token <cadena> TIPO_DATO
@@ -58,6 +56,7 @@ float real;
 %token <cadena> RETURN
 
 %type <cadena> unaVariableSimple
+%type <cadena> error
 
 %%
 
@@ -65,8 +64,9 @@ input:  /* vacio */
         | input line
 ;
 
-line:   declaracion     
-        | sentencia
+line:   declaracion '\n'        {linea++;}
+        | sentencia '\n'        {linea++;}
+        | error '\n'            {printf("\nSe detecto un error sintactico en la linea %i.", linea); linea++;}     
 ;
 
 /* --------------------------------------------------------------------------------------

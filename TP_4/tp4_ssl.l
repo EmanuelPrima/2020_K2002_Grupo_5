@@ -10,7 +10,9 @@ option noyywrap
 
 %%
 
-"\n"
+"\n" {return '\n';}
+
+" "|"\t"
 
 "("|")"|"["|"]"|","|"?"|":"|";"|"{"|"}"|"&" {return yytext[0];}
 
@@ -64,6 +66,6 @@ option noyywrap
 
 \'[^']*\' {yylval.entero = yytext[1]; return CONSTANTE_CARACTER;}
 
-.
+. {printf("\nCaracter no reconocido: %c", yytext[0]);}
 
 %%

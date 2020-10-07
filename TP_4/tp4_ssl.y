@@ -24,6 +24,7 @@ int linea = 1;
 %union {
 char cadena[50];
 int entero;
+float real;
 }
 
 %token <cadena> TIPO_DATO

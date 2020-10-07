@@ -35,9 +35,6 @@ float real;
 %token <entero> CONSTANTE_HEXADECIMAL
 %token <real>   CONSTANTE_REAL
 %token <entero> CONSTANTE_CARACTER
-%token <cadena> SUFIJO_UNSIGNED
-%token <cadena> SUFIJO_LONG
-%token <cadena> SUFIJO_REAL
 %token <cadena> OPER_ADITIVO
 %token <cadena> OPER_MULTIPLICATIVO
 %token <cadena> OPER_RELACIONAL
@@ -226,23 +223,14 @@ opcionExpresion:        /* vacio */
 
 
 /* --------------------------------------------------------------------------------------
-   ----------------------------------GRAMATICA AUXILIAR----------------------------------
+   -------------------------------GRAMATICA DE LAS CONSTANTES----------------------------
    -------------------------------------------------------------------------------------- */
 
-constante:      CONSTANTE_DECIMAL sufijo_entero
-                | CONSTANTE_OCTAL sufijo_entero
-                | CONSTANTE_HEXADECIMAL sufijo_entero
-                | CONSTANTE_REAL sufijo_real
-                | CONSTANTE_CARACTER
-;
-
-sufijo_entero:  /* vacio */
-                | SUFIJO_UNSIGNED
-                | SUFIJO_LONG
-;
-
-sufijo_real:    /* vacio */
-                | SUFIJO_REAL
+constante:      CONSTANTE_DECIMAL             
+                | CONSTANTE_OCTAL               
+                | CONSTANTE_HEXADECIMAL       
+                | CONSTANTE_REAL                 
+                | CONSTANTE_CARACTER                         
 ;
 
 %%

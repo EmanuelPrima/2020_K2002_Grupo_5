@@ -47,26 +47,23 @@
      CONSTANTE_HEXADECIMAL = 263,
      CONSTANTE_REAL = 264,
      CONSTANTE_CARACTER = 265,
-     SUFIJO_UNSIGNED = 266,
-     SUFIJO_LONG = 267,
-     SUFIJO_REAL = 268,
-     OPER_ADITIVO = 269,
-     OPER_MULTIPLICATIVO = 270,
-     OPER_RELACIONAL = 271,
-     OPER_UNARIO = 272,
-     OPER_IGUALDAD = 273,
-     OPER_ASIGNACION = 274,
-     OPER_INCREMENTO = 275,
-     OPER_SIZEOF = 276,
-     AND = 277,
-     OR = 278,
-     IF = 279,
-     SWITCH = 280,
-     ELSE = 281,
-     FOR = 282,
-     WHILE = 283,
-     DO = 284,
-     RETURN = 285
+     OPER_ADITIVO = 266,
+     OPER_MULTIPLICATIVO = 267,
+     OPER_RELACIONAL = 268,
+     OPER_UNARIO = 269,
+     OPER_IGUALDAD = 270,
+     OPER_ASIGNACION = 271,
+     OPER_INCREMENTO = 272,
+     OPER_SIZEOF = 273,
+     AND = 274,
+     OR = 275,
+     IF = 276,
+     SWITCH = 277,
+     ELSE = 278,
+     FOR = 279,
+     WHILE = 280,
+     DO = 281,
+     RETURN = 282
    };
 #endif
 
@@ -86,7 +83,7 @@ float real;
 
 
 /* Line 1676 of yacc.c  */
-#line 90 "tp4_ssl.tab.h"
+#line 87 "tp4_ssl.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
+#include "listas_TS.c"
 
 int yylex();
 
@@ -15,9 +16,13 @@ int yywrap(){
 void yyerror (char const *s) {}
 
 int contadorParametros = 0;
-int contadorDeclaraciones = 0;
-int contadorSentencias = 0;
 int linea = 1;
+
+int hayErrorSemantico = 0;
+
+Simbolo* simboloAux;
+
+TipoParametro* listaParametrosAux = NULL;
 
 %}
 
@@ -137,11 +142,11 @@ declaracion:    declaracionVariablesSimples
                 | definicionFunciones
 ;
 
-declaracionVariablesSimples:    TIPO_DATO listaVariablesSimples ';' {printf(" de tipo %s.", $<cadena>1);}
+declaracionVariablesSimples:    TIPO_DATO listaVariablesSimples ';' {if (!hayErrorSemantico) {printf(" de tipo %s.", $<cadena>1);} else {hayErrorSemantico = 0;}}
 ;
 
-listaVariablesSimples:  unaVariableSimple       {printf("\nSe declara la variable %s", $<cadena>1);}
-                        | listaVariablesSimples ',' unaVariableSimple {printf(", y la variable %s", $<cadena>3);}
+listaVariablesSimples:  unaVariableSimple                               {simboloAux = buscarSimbolo($<cadena>1); if (simboloAux == NULL) {agregarSimbolo($<cadena>1, 0); printf("\nSe declara la variable %s", $<cadena>1);} else {printf("\nError: doble declaracion de la variable '%s'.", $<cadena>1); hayErrorSemantico = 1;}}
+                        | listaVariablesSimples ',' unaVariableSimple   {simboloAux = buscarSimbolo($<cadena>3); if (simboloAux == NULL && !hayErrorSemantico) {agregarSimbolo($<cadena>3, 0); printf(", y la variable %s", $<cadena>3);} else {if (!hayErrorSemantico) {printf("\nError: doble declaracion de la variable '%s'.", $<cadena>3); hayErrorSemantico = 1;}}}
 ;
 
 unaVariableSimple:      IDENTIFICADOR opcionInicializacion      {strcpy($<cadena>$, $<cadena>1);}
@@ -153,23 +158,23 @@ opcionInicializacion:   /* vacio */
 
 
 
-declaracionFunciones:   TIPO_DATO IDENTIFICADOR '(' opcionArgumentosConTipo ')' ';' {printf("\nSe declara la funcion %s de tipo %s que recibe %i parametro/s.", $<cadena>2, $<cadena>1, contadorParametros); contadorParametros = 0;}
+declaracionFunciones:   TIPO_DATO IDENTIFICADOR '(' opcionArgumentosConTipo ')' ';' {simboloAux = agregarSimbolo($<cadena>2, 1); simboloAux->tiposParametros = listaParametrosAux; listaParametrosAux = NULL; printf("\nSe declara la funcion %s de tipo %s que recibe %i parametro/s (", $<cadena>2, $<cadena>1, contadorParametros); contadorParametros = 0; mostrarTipos(&(simboloAux->tiposParametros)); printf(").");}
 ;
 
 opcionArgumentosConTipo:        /* vacio */ 
-                                | TIPO_DATO opcionReferencia IDENTIFICADOR {contadorParametros++;}
-                                | TIPO_DATO opcionReferencia IDENTIFICADOR ',' argumentosConTipo {contadorParametros++;}
+                                | TIPO_DATO opcionReferencia IDENTIFICADOR                              {contadorParametros++;       push(&listaParametrosAux, $<cadena>1);}
+                                | TIPO_DATO opcionReferencia IDENTIFICADOR ',' argumentosConTipo        {contadorParametros++;       push(&listaParametrosAux, $<cadena>1);}
 ;
 
-argumentosConTipo:      TIPO_DATO opcionReferencia IDENTIFICADOR {contadorParametros++;}
-                        | TIPO_DATO opcionReferencia IDENTIFICADOR ',' argumentosConTipo {contadorParametros++;}
+argumentosConTipo:      TIPO_DATO opcionReferencia IDENTIFICADOR {contadorParametros++; push(&listaParametrosAux, $<cadena>1);}
+                        | TIPO_DATO opcionReferencia IDENTIFICADOR ',' argumentosConTipo {contadorParametros++; push(&listaParametrosAux, $<cadena>1);}
 ;
 
 opcionReferencia:       /* vacio */
                         | '&'
 ;
 
-definicionFunciones:    TIPO_DATO IDENTIFICADOR '(' opcionArgumentosConTipo ')' sentencia {printf("\nSe define la funcion %s de tipo %s que recibe %i parametro/s.", $<cadena>2, $<cadena>1, contadorParametros); contadorParametros = 0;}
+definicionFunciones:    TIPO_DATO IDENTIFICADOR '(' opcionArgumentosConTipo ')' sentencia {simboloAux = agregarSimbolo($<cadena>2, 1); simboloAux->tiposParametros = listaParametrosAux; listaParametrosAux = NULL; printf("\nSe declara la funcion %s de tipo %s que recibe %i parametro/s (", $<cadena>2, $<cadena>1, contadorParametros); contadorParametros = 0; mostrarTipos(&(simboloAux->tiposParametros)); printf(").");}
 
 /* --------------------------------------------------------------------------------------
    -----------------------------GRAMATICA DE LAS SENTENCIAS------------------------------
@@ -182,38 +187,38 @@ sentencia:      sentenciaCompuesta
                 | sentenciaSalto
 ;
 
-sentenciaCompuesta:     '{' opcionListaDeclaraciones opcionListaSentencias '}'  {printf("\nSe encontro una sentencia compuesta con %i declaraciones y otras %i sentencias.", contadorDeclaraciones, contadorSentencias); contadorDeclaraciones = 0; contadorSentencias = 0;}
+sentenciaCompuesta:     '{' opcionListaDeclaraciones opcionListaSentencias '}'  
 ;
 
 opcionListaDeclaraciones:       /* vacio */
-                                | declaracion                           {contadorDeclaraciones++;}
-                                | opcionListaDeclaraciones declaracion  {contadorDeclaraciones++;}
+                                | declaracion                           
+                                | opcionListaDeclaraciones declaracion
 ;
 
-listaSentencias:        sentencia                       {contadorSentencias++;}
-                        | listaSentencias sentencia     {contadorSentencias++;}
+listaSentencias:        sentencia                       
+                        | listaSentencias sentencia  
 ;
 
 opcionListaSentencias:  /* vacio*/
-                        | sentencia                     {contadorSentencias++;}
-                        | listaSentencias sentencia     {contadorSentencias++;}
+                        | sentencia                    
+                        | listaSentencias sentencia   
 ;
 
-sentenciaExpresion:     ';'                     {printf("\nSe encontro una sentencia vacia.");}
-                        | expresion ';'         {printf("\nSe encontro una sentencia expresion.");}
+sentenciaExpresion:     ';'                     
+                        | expresion ';'         
 ;
 
-sentenciaSeleccion:     IF '(' expresion ')' sentencia                  {printf("\nSe encontro una sentencia de seleccion (if).");}
-                        | IF '(' expresion ')' sentencia ELSE sentencia {printf("\nSe encontro una sentencia de seleccion (if y else).");}
-                        | SWITCH '(' expresion ')' sentencia            {printf("\nSe encontro una sentencia de seleccion (switch).");}
+sentenciaSeleccion:     IF '(' expresion ')' sentencia                  
+                        | IF '(' expresion ')' sentencia ELSE sentencia 
+                        | SWITCH '(' expresion ')' sentencia            
 ;
 
-sentenciaIteracion:     WHILE '(' expresion ')' sentencia                                               {printf("\nSe encontro una sentencia de iteracion (while).");}
-                        | DO sentencia WHILE '(' expresion ')' ';'                                      {printf("\nSe encontro una sentencia de iteracion (do while).");}
-                        | FOR '(' opcionExpresion ';' opcionExpresion ';' opcionExpresion ')' sentencia {printf("\nSe encontro una sentencia de iteracion (for).");}
+sentenciaIteracion:     WHILE '(' expresion ')' sentencia                                               
+                        | DO sentencia WHILE '(' expresion ')' ';'                                      
+                        | FOR '(' opcionExpresion ';' opcionExpresion ';' opcionExpresion ')' sentencia 
 ;
 
-sentenciaSalto: RETURN opcionExpresion ';'      {printf("\nSe encontro una sentencia de salto.");}
+sentenciaSalto: RETURN opcionExpresion ';'      
 ;
 
 opcionExpresion:        /* vacio */

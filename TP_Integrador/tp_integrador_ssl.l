@@ -66,6 +66,6 @@ option noyywrap
 
 \'[^']*\' {yylval.entero = yytext[1]; return CONSTANTE_CARACTER;}
 
-. {printf("\nCaracter no reconocido: %c", yytext[0]);}
+. {printf("\nCaracter no reconocido: %c.", yytext[0]);}
 
 %%
